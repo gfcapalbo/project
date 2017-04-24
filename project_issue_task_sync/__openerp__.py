@@ -14,6 +14,7 @@
     "data": [
         'views/project_project.xml',
         'views/project_task.xml',
+        'views/project_issue.xml',
     ],
     "installable": True,
 }

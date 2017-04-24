@@ -28,7 +28,7 @@ class ProjectProject(models.Model):
         """
         if self.sync_tasks_issues:
             for task in self.task_ids:
-                task.write({})
+                task.set_issue_vals()
 
     def sync_all_projects(self):
         for project in self.env.filtered('sync_tasks_issues'):

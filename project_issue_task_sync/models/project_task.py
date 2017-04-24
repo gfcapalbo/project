@@ -7,37 +7,31 @@ from openerp import api, fields, models
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
+    sync_tasks_issues = fields.Boolean(
+        related=['project_id', 'sync_tasks_issues']
+    )
     issue_ids = fields.One2many('project.issue', 'task_id', 'Issues')
 
-    # CAN EXTEND THIS TO SYNC MORE Fields, if we want to create a model
-    # fields to sync we can do it here.
-
-    def get_changed_vals(self):
-        vals = {}
-        if self.issue_ids[:1].stage_id != self.stage_id:
-            vals['stage_id'] = self.stage_id.id
-        if self.issue_ids[:1].user_id != self.user_id:
-            vals['user_id'] = self.user_id.id
-        return vals
 
     @api.multi
     def set_issue_vals(self):
         for this in self:
             # If I see that on write or create my task has no issue , create
             # it obviously as a sync_operation / no mail
-            if not len(this.issue_ids) > 0:
-                self.env['project.issue'].with_context(
+            issue = this.issue_ids[:-1]
+            if not this.issue_ids:
+                issue = self.env['project.issue'].with_context(
                     mail_notrack=True, is_sync_operation=True).create({
-                        'project_id':  self.project_id.id,
-                        'name': self.name,
-                        'task_id':  self.id,
-                        'user_id': self.user_id.id,
-                        'stage_id': self.stage_id.id,
-                        'description': self.description
+                        'project_id':  this.project_id.id,
+                        'name': this.name,
+                        'task_id':  this.id,
+                        'user_id': this.user_id.id,
+                        'stage_id': this.stage_id.id,
+                        'description': this.description or 'No Description'
                         })
             if (this.project_id.sync_tasks_issues and not
-                    self.env.context.get('is_sync_operation')):
-                vals = this.get_changed_vals()
+                    this.env.context.get('is_sync_operation')):
+                vals = self.env['project.issue'].get_changed_vals(self, issue)
                 # NOTE we will write on all issues if they are multiple
                 if vals:
                     this.issue_ids.with_context(
