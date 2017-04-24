@@ -19,7 +19,7 @@ class ProjectTask(models.Model):
             # If I see that on write or create my task has no issue , create
             # it obviously as a sync_operation / no mail
             issue = this.issue_ids[:-1]
-            if not this.issue_ids:
+            if not issue:
                 issue = self.env['project.issue'].with_context(
                     mail_notrack=True, is_sync_operation=True).create({
                         'project_id':  this.project_id.id,
@@ -31,7 +31,7 @@ class ProjectTask(models.Model):
                         })
             if (this.project_id.sync_tasks_issues and not
                     this.env.context.get('is_sync_operation')):
-                vals = self.env['project.issue'].get_changed_vals(self, issue)
+                vals = self.env['project.issue'].get_changed_vals(this, issue)
                 # NOTE we will write on all issues if they are multiple
                 if vals:
                     this.issue_ids.with_context(

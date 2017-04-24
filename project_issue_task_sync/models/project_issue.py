@@ -10,18 +10,16 @@ class ProjectIssue(models.Model):
     sync_tasks_issues = fields.Boolean(
         related=['project_id', 'sync_tasks_issues']
     )
-    def get_changed_vals(self, record):
+    def get_changed_vals(self, origin, paired):
         vals = {}
-        if record.stage_id != self.stage_id:
-            vals['stage_id'] = self.stage_id.id
-        if record.user_id != self.user_id:
-            vals['user_id'] = self.user_id.id
-        if record.name != self.name:
-            vals['name'] = self.name
-        if record.description != self.description:
-            vals['description'] = self.description
-        if record.project_id != self.project_id:
-            vals['project_id'] = self.project_id.id
+        if paired.stage_id != origin.stage_id:
+            vals['stage_id'] = origin.stage_id.id
+        if paired.user_id != origin.user_id:
+            vals['user_id'] = origin.user_id.id
+        if paired.description != origin.description:
+            vals['description'] = origin.description
+        if paired.project_id != origin.project_id:
+            vals['project_id'] = origin.project_id.id
         return vals
 
     def set_issue_vals(self):
@@ -44,7 +42,7 @@ class ProjectIssue(models.Model):
                     })
             if (this.project_id.sync_tasks_issues and task and not
                     this.env.context.get('is_sync_operation')):
-                vals = this.get_changed_vals(task)
+                vals = this.get_changed_vals(this, task)
                 if vals:
                     task.with_context(
                         mail_notrack=True, is_sync_operation=True
