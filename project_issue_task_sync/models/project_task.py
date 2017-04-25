@@ -35,7 +35,7 @@ class ProjectTask(models.Model):
                 # NOTE we will write on all issues if they are multiple
                 if vals:
                     this.issue_ids.with_context(
-                        mail_notrack=True, sync_operation=True
+                        mail_notrack=True, is_sync_operation=True
                     ).write(vals)
 
     @api.model

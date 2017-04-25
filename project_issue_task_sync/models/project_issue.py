@@ -26,11 +26,6 @@ class ProjectIssue(models.Model):
     def set_issue_vals(self):
         for this in self:
             task = this.sudo().task_id[:1]
-            # currently task creation is done on the first time write
-            # this needs to be rectified and made on creation.
-            # making the task on creation will cause no problem to the old
-            # code, because it will find that the associated task is already
-            # there and skip creation
             if not len(task) > 0:
                 task = self.env['project.task'].with_context(
                     mail_notrack=True, is_sync_operation=True).create({
