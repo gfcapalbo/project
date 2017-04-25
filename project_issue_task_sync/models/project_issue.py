@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # © 2017 Therp BV <http://therp.nl>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-from openerp import api, models, fields 
+from openerp import api, models, fields
 
 
 class ProjectIssue(models.Model):
@@ -10,6 +10,7 @@ class ProjectIssue(models.Model):
     sync_tasks_issues = fields.Boolean(
         related=['project_id', 'sync_tasks_issues']
     )
+
     def get_changed_vals(self, origin, paired):
         vals = {}
         if paired.stage_id != origin.stage_id:
