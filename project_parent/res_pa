@@ -1,0 +1,195 @@
+                                                          Table "public.res_partner"
+                     Column                     |            Type             | Collation | Nullable |                 Default                 
+------------------------------------------------+-----------------------------+-----------+----------+-----------------------------------------
+ id                                             | integer                     |           | not null | nextval('res_partner_id_seq'::regclass)
+ create_uid                                     | integer                     |           |          | 
+ create_date                                    | timestamp without time zone |           |          | 
+ write_date                                     | timestamp without time zone |           |          | 
+ write_uid                                      | integer                     |           |          | 
+ comment                                        | text                        |           |          | 
+ barcode                                        | character varying           |           |          | 
+ color                                          | integer                     |           |          | 
+ date                                           | date                        |           |          | 
+ active                                         | boolean                     |           |          | 
+ lang                                           | character varying           |           |          | 
+ customer                                       | boolean                     |           |          | 
+ credit_limit                                   | double precision            |           |          | 
+ user_id                                        | integer                     |           |          | 
+ name                                           | character varying           |           |          | 
+ title                                          | integer                     |           |          | 
+ company_id                                     | integer                     |           |          | 
+ parent_id                                      | integer                     |           |          | 
+ employee                                       | boolean                     |           |          | 
+ supplier                                       | boolean                     |           |          | 
+ ref                                            | character varying           |           |          | 
+ vat                                            | character varying           |           |          | 
+ openupgrade_legacy_12_0_opt_out                | boolean                     |           |          | 
+ last_time_entries_checked                      | timestamp without time zone |           |          | 
+ debit_limit                                    | numeric                     |           |          | 
+ vat_subjected                                  | boolean                     |           |          | 
+ payment_method                                 | character varying           |           |          | 
+ import_id                                      | character varying(16)       |           |          | 
+ website                                        | character varying           |           |          | 
+ pay_in_advance                                 | boolean                     |           |          | 
+ distributor_import_ref                         | character varying(64)       |           |          | 
+ code_at_supplier                               | character varying(64)       |           |          | 
+ use_parent_address                             | boolean                     |           |          | 
+ street                                         | character varying           |           |          | 
+ zip                                            | character varying           |           |          | 
+ function                                       | character varying           |           |          | 
+ country_id                                     | integer                     |           |          | 
+ type                                           | character varying           |           |          | 
+ email                                          | character varying           |           |          | 
+ fax                                            | character varying           |           |          | 
+ city                                           | character varying           |           |          | 
+ street2                                        | character varying           |           |          | 
+ phone                                          | character varying           |           |          | 
+ tz                                             | character varying(64)       |           |          | 
+ mobile                                         | character varying           |           |          | 
+ openupgrade_legacy_10_0_birthdate              | character varying           |           |          | 
+ is_company                                     | boolean                     |           |          | 
+ state_id                                       | integer                     |           |          | 
+ openupgrade_7_migrated_from_address_id         | integer                     |           |          | 
+ category_id                                    | integer                     |           |          | 
+ openupgrade_legacy_8_0_notification_email_send | character varying           |           |          | 
+ signup_type                                    | character varying           |           |          | 
+ signup_expiration                              | timestamp without time zone |           |          | 
+ signup_token                                   | character varying           |           |          | 
+ display_name                                   | character varying           |           |          | 
+ commercial_partner_id                          | integer                     |           |          | 
+ notify_email                                   | character varying           |           |          | 
+ message_last_post                              | timestamp without time zone |           |          | 
+ team_id                                        | integer                     |           |          | 
+ openupgrade_legacy_9_0_type                    | character varying           |           |          | 
+ company_type                                   | character varying           |           |          | 
+ commercial_company_name                        | character varying           |           |          | 
+ company_name                                   | character varying           |           |          | 
+ partner_share                                  | boolean                     |           |          | 
+ message_bounce                                 | integer                     |           |          | 
+ invoice_warn_msg                               | text                        |           |          | 
+ invoice_warn                                   | character varying           |           |          | 
+ sale_warn                                      | character varying           |           |          | 
+ sale_warn_msg                                  | text                        |           |          | 
+ picking_warn                                   | character varying           |           |          | 
+ picking_warn_msg                               | text                        |           |          | 
+ purchase_warn                                  | character varying           |           |          | 
+ purchase_warn_msg                              | text                        |           |          | 
+ industry_id                                    | integer                     |           |          | 
+ commercial_partner_country_id                  | integer                     |           |          | 
+ street_name                                    | character varying           |           |          | 
+ street_number                                  | character varying           |           |          | 
+ street_number2                                 | character varying           |           |          | 
+ openupgrade_legacy_12_0_activity_date_deadline | date                        |           |          | 
+ message_main_attachment_id                     | integer                     |           |          | 
+ partner_gid                                    | integer                     |           |          | 
+ additional_info                                | character varying           |           |          | 
+Indexes:
+    "res_partner_pkey" PRIMARY KEY, btree (id)
+    "res_partner_ref_uniq" UNIQUE CONSTRAINT, btree (ref)
+    "res_partner_commercial_partner_id_index" btree (commercial_partner_id)
+    "res_partner_company_id_index" btree (company_id)
+    "res_partner_date_index" btree (date)
+    "res_partner_display_name_index" btree (display_name)
+    "res_partner_message_main_attachment_id_index" btree (message_main_attachment_id)
+    "res_partner_name_index" btree (name)
+    "res_partner_parent_id_index" btree (parent_id)
+    "res_partner_ref_index" btree (ref)
+    "res_partner_vat_index" btree (regexp_replace(upper(vat::text), '[^A-Z0-9]+'::text, ''::text, 'g'::text))
+Check constraints:
+    "res_partner_check_name" CHECK (type::text = 'contact'::text AND name IS NOT NULL OR type::text <> 'contact'::text)
+Foreign-key constraints:
+    "res_partner_commercial_partner_country_id_fkey" FOREIGN KEY (commercial_partner_country_id) REFERENCES res_country(id) ON DELETE SET NULL
+    "res_partner_commercial_partner_id_fkey" FOREIGN KEY (commercial_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    "res_partner_company_id_fkey" FOREIGN KEY (company_id) REFERENCES res_company(id) ON DELETE SET NULL
+    "res_partner_country_id_fkey" FOREIGN KEY (country_id) REFERENCES res_country(id) ON DELETE RESTRICT
+    "res_partner_create_uid_fkey" FOREIGN KEY (create_uid) REFERENCES res_users(id) ON DELETE SET NULL
+    "res_partner_industry_id_fkey" FOREIGN KEY (industry_id) REFERENCES res_partner_industry(id) ON DELETE SET NULL
+    "res_partner_message_main_attachment_id_fkey" FOREIGN KEY (message_main_attachment_id) REFERENCES ir_attachment(id) ON DELETE SET NULL
+    "res_partner_parent_id_fkey" FOREIGN KEY (parent_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    "res_partner_section_id_fkey" FOREIGN KEY (team_id) REFERENCES crm_team(id) ON DELETE SET NULL
+    "res_partner_state_id_fkey" FOREIGN KEY (state_id) REFERENCES res_country_state(id) ON DELETE RESTRICT
+    "res_partner_title_fkey" FOREIGN KEY (title) REFERENCES res_partner_title(id) ON DELETE SET NULL
+    "res_partner_user_id_fkey" FOREIGN KEY (user_id) REFERENCES res_users(id) ON DELETE SET NULL
+    "res_partner_write_uid_fkey" FOREIGN KEY (write_uid) REFERENCES res_users(id) ON DELETE SET NULL
+Referenced by:
+    TABLE "account_analytic_account" CONSTRAINT "account_analytic_account_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_analytic_line" CONSTRAINT "account_analytic_line_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_bank_statement_line" CONSTRAINT "account_bank_statement_line_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_invoice" CONSTRAINT "account_invoice_commercial_partner_id_fkey" FOREIGN KEY (commercial_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_invoice_line" CONSTRAINT "account_invoice_line_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_invoice" CONSTRAINT "account_invoice_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE RESTRICT
+    TABLE "account_invoice" CONSTRAINT "account_invoice_partner_shipping_id_fkey" FOREIGN KEY (partner_shipping_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_model_line" CONSTRAINT "account_model_line_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_move_line" CONSTRAINT "account_move_line_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE RESTRICT
+    TABLE "account_move" CONSTRAINT "account_move_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_partner_reconcile_process" CONSTRAINT "account_partner_reconcile_process_next_partner_id_fkey" FOREIGN KEY (next_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_payment" CONSTRAINT "account_payment_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_reconcile_model_res_partner_rel" CONSTRAINT "account_reconcile_model_res_partner_rel_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "account_reconcile_model_template_res_partner_rel" CONSTRAINT "account_reconcile_model_template_res_partne_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "account_register_payments" CONSTRAINT "account_register_payments_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "account_voucher" CONSTRAINT "account_voucher_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "base_partner_merge_automatic_wizard" CONSTRAINT "base_partner_merge_automatic_wizard_dst_partner_id_fkey" FOREIGN KEY (dst_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "base_partner_merge_automatic_wizard_res_partner_rel" CONSTRAINT "base_partner_merge_automatic_wizard_res_par_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_template" CONSTRAINT "email_template_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "email_template_preview" CONSTRAINT "email_template_preview_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "email_template_preview_res_partner_rel" CONSTRAINT "email_template_preview_res_partner_rel_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "ir_act_server_res_partner_rel" CONSTRAINT "ir_act_server_res_partner_rel_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_channel_partner" CONSTRAINT "mail_channel_partner_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_compose_message" CONSTRAINT "mail_compose_message_author_id_fkey" FOREIGN KEY (author_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "mail_compose_message_res_partner_rel" CONSTRAINT "mail_compose_message_res_partner_rel_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_followers" CONSTRAINT "mail_followers_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_mail_res_partner_rel" CONSTRAINT "mail_mail_res_partner_rel_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_message" CONSTRAINT "mail_message_author_id_fkey" FOREIGN KEY (author_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "mail_message" CONSTRAINT "mail_message_partner_id_fkey" FOREIGN KEY (openupgrade_legacy_7_0_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "mail_message_res_partner_needaction_rel" CONSTRAINT "mail_message_res_partner_needaction_rel_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_message_res_partner_rel" CONSTRAINT "mail_message_res_partner_rel_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_message_res_partner_starred_rel" CONSTRAINT "mail_message_res_partner_starred_rel_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_notification" CONSTRAINT "mail_notification_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_resend_partner" CONSTRAINT "mail_resend_partner_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "mail_wizard_invite_res_partner_rel" CONSTRAINT "mail_wizard_invite_res_partner_rel_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "payment_method" CONSTRAINT "payment_method_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "payment_token" CONSTRAINT "payment_token_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "payment_transaction" CONSTRAINT "payment_transaction_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "portal_share_res_partner_rel" CONSTRAINT "portal_share_res_partner_rel_res_partner_id_fkey" FOREIGN KEY (res_partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "portal_wizard_user" CONSTRAINT "portal_wizard_user_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "procurement_group" CONSTRAINT "procurement_group_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_rule" CONSTRAINT "procurement_rule_partner_address_id_fkey" FOREIGN KEY (partner_address_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "product_supplierinfo" CONSTRAINT "product_supplierinfo_name_fkey" FOREIGN KEY (name) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "product_template" CONSTRAINT "product_template_publisher_id_fkey" FOREIGN KEY (publisher_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "purchase_order" CONSTRAINT "purchase_order_dest_address_id_fkey1" FOREIGN KEY (dest_address_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "purchase_order_line" CONSTRAINT "purchase_order_line_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "purchase_order" CONSTRAINT "purchase_order_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "res_company" CONSTRAINT "res_company_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "res_partner_address" CONSTRAINT "res_partner_address_openupgrade_7_migrated_to_partner_id_fkey" FOREIGN KEY (openupgrade_7_migrated_to_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "res_partner_address" CONSTRAINT "res_partner_address_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "res_partner_autocomplete_sync" CONSTRAINT "res_partner_autocomplete_sync_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "res_partner_bank" CONSTRAINT "res_partner_bank_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "res_partner_res_partner_category_rel" CONSTRAINT "res_partner_category_rel_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "res_partner" CONSTRAINT "res_partner_commercial_partner_id_fkey" FOREIGN KEY (commercial_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "res_partner_distributor_rel" CONSTRAINT "res_partner_distributor_rel_distributor_id_fkey" FOREIGN KEY (distributor_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "res_partner_distributor_rel" CONSTRAINT "res_partner_distributor_rel_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE CASCADE
+    TABLE "res_partner_event" CONSTRAINT "res_partner_event_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "res_partner" CONSTRAINT "res_partner_parent_id_fkey" FOREIGN KEY (parent_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "res_request" CONSTRAINT "res_request_ref_partner_id_fkey" FOREIGN KEY (ref_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "res_users" CONSTRAINT "res_users_openupgrade_7_created_partner_id_fkey" FOREIGN KEY (openupgrade_7_created_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "res_users" CONSTRAINT "res_users_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE RESTRICT
+    TABLE "sale_order_line" CONSTRAINT "sale_order_line_address_allotment_id_fkey1" FOREIGN KEY (address_allotment_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "sale_order_line" CONSTRAINT "sale_order_line_order_partner_id_fkey" FOREIGN KEY (order_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "sale_order" CONSTRAINT "sale_order_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "sale_order" CONSTRAINT "sale_order_partner_invoice_id_fkey1" FOREIGN KEY (partner_invoice_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "sale_order" CONSTRAINT "sale_order_partner_shipping_id_fkey1" FOREIGN KEY (partner_shipping_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "snailmail_letter" CONSTRAINT "snailmail_letter_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_inventory_line" CONSTRAINT "stock_inventory_line_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_inventory" CONSTRAINT "stock_inventory_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_location" CONSTRAINT "stock_location_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_move_line" CONSTRAINT "stock_move_line_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_move" CONSTRAINT "stock_move_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_move" CONSTRAINT "stock_move_restrict_partner_id_fkey" FOREIGN KEY (restrict_partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_picking" CONSTRAINT "stock_picking_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_picking" CONSTRAINT "stock_picking_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_quant" CONSTRAINT "stock_quant_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_quant_package" CONSTRAINT "stock_quant_package_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_scrap" CONSTRAINT "stock_scrap_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_transfer_details_items" CONSTRAINT "stock_transfer_details_items_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    TABLE "stock_warehouse" CONSTRAINT "stock_warehouse_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES res_partner(id) ON DELETE SET NULL
+
