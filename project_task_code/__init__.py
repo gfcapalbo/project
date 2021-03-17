@@ -13,7 +13,7 @@ def create_code_equal_to_id(cr):
     """
     cr.execute('ALTER TABLE project_task '
                'ADD COLUMN code character varying;')
-    cr.execute('UPDATE project_task '
+    cr.execute('UPDATE project_task'
                'SET code = id;')
 
 
