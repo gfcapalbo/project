@@ -24,22 +24,14 @@ class ProjectCustomerNewPortal(ProjectCustomerPortal):
             default = project.portal_stage_id
         # priority and stage have defaults
         if fieldname == "priority":
-            request.env["project.task"].default_get(["priority"])["priority"]
+            default = request.env["project.task"].default_get(["priority"])["priority"]
         if not default:
             if fieldname == "name":
-                user_name = (
-                    request.env["res.users"]
-                    .sudo()
-                    .browse(int(request.env.context["uid"]))
-                    .name
-                )
-                default = " ".join(
-                    ["Portal task from", user_name, "generated on", str(Datetime.now())]
-                )
+                user_name = request.env["res.users"].sudo().browse(
+                    int(request.env.context.get("uid", request.env.user.id))).name
+                default = f"Portal task from {user_name} generated on {Datetime.now()}"
             if fieldname == "date_deadline":
-                default = str(
-                    Datetime.now() + timedelta(days=project.auto_portal_deadline)
-                )
+                default = Date.today() + timedelta(days=project.auto_portal_deadline) 
         return default
 
     def _validate_task_fields(self, data, task_creation=False) -> tuple:
@@ -144,7 +136,6 @@ class ProjectCustomerNewPortal(ProjectCustomerPortal):
             if not error:
                 values = self._prepare_task_values(post, mode="create")
                 values.update(
-                    stage_id=project.portal_stage_id.id,
                     partner_id=request.env.user.partner_id.id,
                     project_id=project.id,
                 )
